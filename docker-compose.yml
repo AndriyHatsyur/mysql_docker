@@ -1,7 +1,6 @@
-version: '3.5'
+version: "3.5"
 
 services:
-
   db:
     image: mysql
     command: --default-authentication-plugin=mysql_native_password
@@ -9,20 +8,25 @@ services:
     ports:
       - 3306:3306
     environment:
-      MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     networks:
-      - proxy
-    
+      - mysql_db
+    volumes:
+      - mysql-data:/var/lib/mysql
+
   adminer:
     image: adminer
     restart: always
     ports:
       - 8080:8080
     networks:
-      - proxy
+      - mysql_db
 
 networks:
-  proxy:
+  mysql_db:
     external: false
-    name: proxy
+    name: mysql_db
+
+volumes:
+  mysql-data:
+    name: mysql-data
