@@ -14,14 +14,6 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
 
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
-    networks:
-      - mysql_db
-
 networks:
   mysql_db:
     external: false
