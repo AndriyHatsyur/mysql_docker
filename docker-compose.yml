@@ -1,24 +1,22 @@
-version: "3.5"
+version: "3"
 
 services:
   db:
-    image: mysql
-    command: --default-authentication-plugin=mysql_native_password
-    restart: always
+    image: mysql:8.0.26
     ports:
       - 3306:3306
+    env_file:
+      - ./.env
+    cap_add:
+      - SYS_NICE  # CAP_SYS_NICE
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-    networks:
-      - mysql_db
-    volumes:
-      - mysql-data:/var/lib/mysql
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_general_ci
+    
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
 
-networks:
-  mysql_db:
-    external: false
-    name: mysql_db
+ 
 
-volumes:
-  mysql-data:
-    name: mysql-data
